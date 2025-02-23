@@ -4,9 +4,9 @@
 #include <fstream>
 #include <iostream>
 
-CrankNicholson::CrankNicholson(const int &latticeWidth, const int &duration, const double &alpha)
+CrankNicholson::CrankNicholson(const int &latticeWidth, const int &duration)
     : latticeWidth_(latticeWidth),
-      duration_(duration), initialState_(latticeWidth), alpha_(alpha), step_(0.1) {
+      duration_(duration), initialState_(latticeWidth), step_(0.1) {
     InitialiseState_();
 
     // Delete old data file

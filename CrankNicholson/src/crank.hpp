@@ -11,14 +11,13 @@
 // Putting it all together implies alpha/D = 0.5.
 class CrankNicholson {
 public:
-    CrankNicholson(const int &latticeWidth, const int &duration, const double &alpha);
+    CrankNicholson(const int &latticeWidth, const int &duration);
     void Step();
 
 private:
     const int latticeWidth_;
     const int duration_;
     const double step_;
-    const double alpha_;
     std::vector<double> initialState_;
     std::vector<double> updateMatrix_ = {step_, 1 - 2 * step_, step_}; // Rhs of Crank Nicholson algorithm
     void InitialiseState_();

@@ -18,7 +18,7 @@ x = np.arange(df.shape[1]-1)
 line, = ax.plot([], [], lw=2)
 
 def theory_prediction(x):
-    # (alpha/(2D))*np.exp((alpha/D)*|x-a|) with a the long term average
+    # (alpha/(2D))*np.exp((alpha/D)*|x-a|) with "a" the long term average
     # we know alpha/D = 0.5 in our units. a is the centre which we set at
     # half the lattice spacing.
 
