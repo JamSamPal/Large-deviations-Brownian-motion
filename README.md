@@ -1,11 +1,7 @@
 # Introduction
-This work numerical solves a PDE, here the heat equation, with the boundary condition that the initial
-and final states are the same. This creates an interesting scenario where the diffusive spreading out of the heat equation
-must be combatted by the need to return to its initial state.
+This work numerically solves a PDE, the heat equation, with the initial state of a Gaussian pulse.
 
-The trick to getting this to work is to exploit the neccesary time reversal symmetry: we propagate the solution forward a given
-number of time steps and then simply reverse the propagation for an equal number of time steps to construct the full solution.#
-Taking, for example, an initially gaussian wavefunction centred at x = 0, the duration we propagate the solution forward for, t_d, 
-gives us a characteristic 'excursion distance' from this initial point, x_d = \sqrt{t_d}. This work can then be applied to simulating 
-any free Brownian motion where one wishes the Brownian mover to fluctuate to a distant value x_d before returning to its initial 
-value again.
+We will be interested in the tails of the probability distribution, that is the probabilities of rare events.
+These tails will always be Gaussian in the absence of an external potential thus, for a more interesting problem,
+we add one. We will consider multiple potentials in this work but begin with the simplest, a delta pulse centred
+on the Gaussian initial state.
