@@ -4,9 +4,9 @@
 #include <fstream>
 #include <iostream>
 
-CrankNicholson::CrankNicholson(const int &latticeWidth, const int &duration, const double &sigma)
+CrankNicholson::CrankNicholson(const int &latticeWidth, const int &duration, const double &alpha)
     : latticeWidth_(latticeWidth),
-      duration_(duration), initialState_(latticeWidth), sigma_(sigma), step_(0.5) {
+      duration_(duration), initialState_(latticeWidth), alpha_(alpha), step_(0.1) {
     InitialiseState_();
 
     // Delete old data file
@@ -20,13 +20,8 @@ CrankNicholson::CrankNicholson(const int &latticeWidth, const int &duration, con
 }
 
 void CrankNicholson::InitialiseState_() {
-    // Gaussian initial state
-    for (int x = 1; x < latticeWidth_ - 1; x++) {
-        initialState_[x] = exp(-pow(x - latticeWidth_ / 2, 2) / (2 * pow(sigma_, 2)));
-    }
-    // Boundary conditions
-    initialState_[0] = 0;
-    initialState_[latticeWidth_ - 1] = 0;
+    // Simple delta function
+    initialState_[latticeWidth_ / 2] = 1;
 }
 
 std::vector<double> CrankNicholson::Update_(const std::vector<double> &state) const {
@@ -36,8 +31,20 @@ std::vector<double> CrankNicholson::Update_(const std::vector<double> &state) co
     newState[1] = state[1] * updateMatrix_[2] + state[0] * updateMatrix_[1];
     newState[latticeWidth_ - 2] = state[latticeWidth_ - 2] * updateMatrix_[0] + state[latticeWidth_ - 1] * updateMatrix_[1];
 
+    double total = 0;
     for (int i = 2; i < latticeWidth_ - 2; i++) {
-        newState[i] = state[i] * updateMatrix_[1] + state[i - 1] * updateMatrix_[0] + state[i + 1] * updateMatrix_[2];
+        if (i == latticeWidth_ / 2) {
+            // Delta function potential
+            newState[i] = state[i] * (updateMatrix_[1] + 0.1) + state[i - 1] * updateMatrix_[0] + state[i + 1] * updateMatrix_[2];
+        } else {
+            newState[i] = state[i] * (updateMatrix_[1]) + state[i - 1] * updateMatrix_[0] + state[i + 1] * updateMatrix_[2];
+        }
+        total += newState[i];
+    }
+
+    // Normalise
+    for (int i = 2; i < latticeWidth_ - 2; i++) {
+        newState[i] /= total;
     }
 
     return newState;
